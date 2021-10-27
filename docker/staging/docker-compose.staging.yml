@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: myapp-staging-mysql
+  api:
+    container_name: myapp-staging-api
+    build:
+      context: ../..
+      dockerfile: ./docker/staging/Dockerfile.staging
+    env_file: .env
+    ports:
+      - "${APP_PORT}:${APP_PORT}"

@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  keycloakId String
+  title      String
+  body       String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  attachments StorageFile[]
+
+  @@map("posts")
+}
+
+model Notification {
+  id         Int       @id @default(autoincrement())
+  keycloakId String
+  level      String
+  data       Json
+  read       Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  @@map("notifications")
+}
+
+model StorageFile {
+  id          Int       @id @default(autoincrement())
+  postId      Int?
+  name        String
+  description String?
+  path        String
+  mimetype    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  post Post? @relation(fields: [postId], references: [id])
+
+  @@map("storage_files")
+}

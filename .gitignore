@@ -1,0 +1,11 @@
+.idea
+dist
+docker/staging/.env
+docker/production/.env
+logs
+node_modules
+yarn-error.log
+patch.diff
+.env
+package-lock.json
+storage/

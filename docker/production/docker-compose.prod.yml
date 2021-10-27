@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: myapp-prod-mysql
+  api:
+    container_name: myapp-prod-api
+    build:
+      context: ../..
+      dockerfile: ./docker/production/Dockerfile.prod
+    env_file: .env
+    ports:
+      - "80:${APP_PORT}"

@@ -1,0 +1,727 @@
+{
+	"info": {
+		"_postman_id": "7e921993-6720-4414-869a-c330700d749a",
+		"name": "Express Startup Project",
+		"description": "1. Run `GetToken` request, the token will be stored automatically\n2. Now you can run all requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "U: List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/users?role=admin",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "admin",
+									"description": "User role: [\"admin\", \"user\"] [optional]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "U: Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/users/roles",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"users",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "P: List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/posts?pageSize=10&currentPage=0",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "The number of elements [Default 10]"
+								},
+								{
+									"key": "currentPage",
+									"value": "0",
+									"description": "The number of page to show [Default 0]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "P: FindById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/posts/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "P: Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Post title\",\r\n    \"body\": \"Post body\",\r\n    \"attachmentIds\": [1]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}api/posts/",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"posts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "P: Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Post title 2\",\r\n    \"body\": \"Post body 2\",\r\n    \"attachmentIds\": [2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}api/posts/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "P: Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/posts/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "StorageFiles",
+			"item": [
+				{
+					"name": "SF: Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uploadFile",
+									"description": "File  [required]",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "File description [optional]",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUri}}api/storage-files/",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"storage-files",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SF: FindById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/storage-files/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"storage-files",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SF: Download",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/storage-files/1/download",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"storage-files",
+								"1",
+								"download"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "N: List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/notifications?pageSize=10&currentPage=0",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "The number of elements [Default 10]"
+								},
+								{
+									"key": "currentPage",
+									"value": "0",
+									"description": "The number of page to show [Default 0]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "N: FindById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/notifications/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "N: Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"keycloakId\": \"\",\r\n    \"level\": \"high\",\r\n    \"data\": {}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}api/notifications/",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"notifications",
+								""
+							]
+						},
+						"description": "Emit the \"new-alarm\" event from socket.io"
+					},
+					"response": []
+				},
+				{
+					"name": "N: Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"read\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}api/notifications/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						},
+						"description": "Emit the \"updated-alarm\" event from socket.io"
+					},
+					"response": []
+				},
+				{
+					"name": "N: Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}api/notifications/1",
+							"host": [
+								"{{baseUri}}api"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "IsAlive",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}",
+					"host": [
+						"{{baseUri}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"accessToken\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "",
+							"description": "KEYCLOAK_CLIENT_ID",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "",
+							"description": "KEYCLOAK_CLIENT_SECRET",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"description": "username of login user",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"description": "password of login user",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://129.0.30.24:8090/auth/realms/safer/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"129",
+						"0",
+						"30",
+						"24"
+					],
+					"port": "8090",
+					"path": [
+						"auth",
+						"realms",
+						"safer",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8000/"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		}
+	]
+}
