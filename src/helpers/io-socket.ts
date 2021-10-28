@@ -22,9 +22,10 @@ export default class IoSocket extends Server {
                         message: `Internal server error`
                     };
                     // Error on verify token: send an `unauthorized` event with status 500 and disconnect the user
-                    Logger.error(`(Socket) [${errorMessage.status}] ${error.stack}`);
                     socket.emit('unauthorized', errorMessage);
-                    return socket.disconnect();
+                    socket.disconnect();
+
+                    throw new Error(`(Socket) [${errorMessage.status}] ${error.stack}`);
                 });
 
                 let statusMessage: IStatusMessage;
