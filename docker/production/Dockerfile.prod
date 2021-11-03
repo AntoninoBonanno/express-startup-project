@@ -21,5 +21,5 @@ RUN npm install --only=production # Install only production dependencies
 RUN npm install pm2 -g # Process manager
 RUN npx prisma generate
 EXPOSE 80
-ENV TZ=Europe/Rome
+ENV TZ=${APP_TIMEZONE}
 CMD ["pm2-runtime","app.js"]

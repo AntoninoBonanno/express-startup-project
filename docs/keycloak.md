@@ -4,9 +4,13 @@ The APIs are protected by [Keycloak](https://www.keycloak.org/) IAM. Two librari
 - [keycloak-connect](https://www.npmjs.com/package/keycloak-connect): to manage the protection of routes 
 - [keycloak-admin-client](https://www.npmjs.com/package/@keycloak/keycloak-admin-client): to query Keycloak via API
 
+## Install Keycloak on Docker
+
+See the [official documentation](https://www.keycloak.org/getting-started)
+
 ## Keycloak settings
 
-From Keycloak Admin Console
+From [Keycloak Admin Console](http://localhost:8080/auth/admin)
 
 1. Create new realm (`KEYCLOAK_REALM`)
 2. Go to **"Clients"** section and create new client (`KEYCLOAK_CLIENT_ID`)

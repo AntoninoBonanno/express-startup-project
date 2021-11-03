@@ -5,6 +5,9 @@ Two releases have been prepared (staging and production) containing "mysql: 5.7"
 Inside the `docker` folder is the "docker-compose" file common for both releases; 
 inside the `docker/staging` and `docker/production` folders are the release-specific "docker-compose" file and Dockerfile
 
+We have chosen not to insert keycloak in the docker-compose file because it requires an [initial configuration](/docs/keycloak.md#keycloak-settings) 
+and it is preferable to have the keycloak service active before starting the application
+
 ## Release instructions
 You can use [docker-compose](https://docs.docker.com/compose/) to create release:
 
@@ -29,6 +32,7 @@ To migrate the database:
    - Or apply migrations manually
 
 NOTE release .env:
+- The `DB_HOST` will be ignored
 - Set `DB_USERNAME` not as "root"
 - Set `DB_PASSWORD` not as empty
 - Uncomment and set `DB_ROOT_PASSWORD`

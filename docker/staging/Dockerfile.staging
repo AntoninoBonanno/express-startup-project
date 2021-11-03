@@ -8,7 +8,7 @@ COPY ./src ./src
 
 RUN npm install
 RUN npx prisma generate
-EXPOSE ${PORT}
+EXPOSE ${APP_PORT}
 
-ENV TZ=Europe/Rome
+ENV TZ=${APP_TIMEZONE}
 CMD ["npm","start"]

@@ -12,10 +12,7 @@ Furthermore, the basic functionalities of an Express server are already implemen
 - [Express Framework](https://expressjs.com/) for the basis of the application
 - Easy configuration environment via .env file
 - APIs protection based on [Keycloak](https://www.keycloak.org/) IAM. (See [documentation](/docs/keycloak.md))
-- [Prisma](https://www.prisma.io/) as database client ORM. 
-
-  <sub><sup>(MySQL was used, but you can easily change database type)</sup></sub>
-
+- [Prisma](https://www.prisma.io/) as database client ORM.   <sub><sup>(MySQL was used, but you can easily change database type)</sup></sub>
 - Custom Exceptions and automatic error handling. (See [documentation](/docs/exceptions.md))
 - Custom Logger based on [winston](https://github.com/winstonjs/winston#readme) and [morgan](https://github.com/expressjs/morgan#readme) libraries. (See [documentation](/docs/logger.md))
 - Easily Validations based on [express-validator](https://express-validator.github.io/docs/) library. (See [documentation](/docs/validations.md))
@@ -60,7 +57,6 @@ NOTE:
 - import the file `Express Startup Project.postman_collection.json` to Postman to test the API
 
 ### TODO
-- [ ] Add Keycloak on docker-compose
 - [ ] Make a version without Keycloak, use jwt
 
 ## Getting Involved
