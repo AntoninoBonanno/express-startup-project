@@ -54,7 +54,7 @@ project
 NOTE:
 - You can run `npm run build` command to build dist server (you need add .env file manually inside /dist directory)
 - You can run `npx prisma studio` command to open Prisma Studio in the browser (is a visual editor for the data in your database)
-- import the file `Express Startup Project.postman_collection.json` to Postman to test the API
+- import the file `docs/Express Startup Project.postman_collection.json` to Postman to test the API
 
 ### TODO
 - [ ] Make a version without Keycloak, use jwt
