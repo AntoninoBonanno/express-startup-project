@@ -19,7 +19,7 @@ export default class NotificationController {
 
         const paginatedList: IPaginatedList<Notification> = {
             pageSize, currentPage,
-            totalPages: await NotificationService.count(),
+            totalPages: Math.ceil(await NotificationService.count() / pageSize),
             contentList: await NotificationService.list(currentPage, pageSize)
         };
 

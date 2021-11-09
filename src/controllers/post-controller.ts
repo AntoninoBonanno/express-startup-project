@@ -20,7 +20,7 @@ export default class PostController {
 
         const paginatedList: IPaginatedList<Post> = {
             pageSize, currentPage,
-            totalPages: await PostService.count(),
+            totalPages: Math.ceil(await PostService.count() / pageSize),
             contentList: await PostService.list(currentPage, pageSize)
         };
 
