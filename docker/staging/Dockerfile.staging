@@ -1,14 +1,18 @@
-FROM node:latest
+FROM node:15-alpine
 WORKDIR /usr/app
 
-COPY ./package.json ./
-COPY ./tsconfig.json ./
-COPY ./prisma/schema.prisma ./prisma/schema.prisma
-COPY ./src ./src
+ENV APP_PORT=8000
+ENV APP_ENV=development
+
+# Copy app files
+COPY . .
+RUN mv ./docker/scripts ./scripts
+
+RUN chmod -R +x ./scripts/
+RUN apk add --no-cache --upgrade bash # Add bash to run scripts
 
 RUN npm install
 RUN npx prisma generate
-EXPOSE ${APP_PORT}
 
-ENV TZ=${APP_TIMEZONE}
-CMD ["npm","start"]
+EXPOSE ${APP_PORT}
+CMD ["bash", "./scripts/start.sh"]

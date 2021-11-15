@@ -23,11 +23,6 @@ const environment = {
     port: process.env.APP_PORT || 8000,
 
     /**
-     * The app timezone
-     */
-    timezone: process.env.APP_TIMEZONE || 'Europe/Rome',
-
-    /**
      * The app roles
      */
     appRoles: {

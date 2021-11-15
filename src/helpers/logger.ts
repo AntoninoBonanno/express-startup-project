@@ -5,10 +5,10 @@ import environment from "../environment";
 /**
  * This method set the current severity based on the environment mode:
  * show all the log levels if the server was run in development mode;
- * otherwise, if it was run in production, show only warn and error messages.
+ * otherwise, if it was run in production, show info, warn and error messages.
  */
 const level = () => {
-    return environment.isProduction() ? 'warn' : 'debug';
+    return environment.isProduction() ? 'info' : 'debug';
 }
 
 // Change default colors

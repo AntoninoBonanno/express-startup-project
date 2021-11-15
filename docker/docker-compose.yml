@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   mysql:
@@ -19,7 +19,7 @@ services:
 #  keycloak:
 #    image: quay.io/keycloak/keycloak:15.0.2
 #    environment:
-#      - TZ=${APP_TIMEZONE}
+#      - TZ=Europe/Rome
 #      - KEYCLOAK_USER=root
 #      - KEYCLOAK_PASSWORD=Pa55word
 #      - KEYCLOAK_HOSTNAME=keycloak
@@ -33,7 +33,10 @@ services:
     environment:
 #      - KEYCLOAK_HOST=keycloak
 #      - KEYCLOAK_PORT=8080
+      - TZ=Europe/Rome
       - DATABASE_URL=mysql://${DB_USERNAME}:${DB_PASSWORD}@mysql:3306/${DB_DATABASE}
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
     depends_on:
       - mysql
 #      - keycloak

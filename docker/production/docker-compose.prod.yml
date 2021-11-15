@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   mysql:
@@ -9,5 +9,3 @@ services:
       context: ../..
       dockerfile: ./docker/production/Dockerfile.prod
     env_file: .env
-    ports:
-      - "80:${APP_PORT}"

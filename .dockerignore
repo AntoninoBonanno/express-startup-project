@@ -1,0 +1,9 @@
+# Ignore everything
+**
+
+# Allow files and directories
+!/docker/scripts/
+!/prisma
+!/src
+!/package.json
+!/tsconfig.json

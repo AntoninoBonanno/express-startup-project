@@ -6,6 +6,7 @@ import environment from "./environment";
 import IoSocket from "./helpers/io-socket";
 import express, {Application} from 'express';
 import rootRouter from "./routes/root-router";
+import {hostname, networkInterfaces} from "os";
 import KeycloakHelper from "./helpers/keycloak-helper";
 import errorMiddleware from "./middlewares/error-middleware";
 import morganMiddleware from "./middlewares/morgan-middleware";
@@ -35,7 +36,10 @@ process.on('unhandledRejection', (error: Error) => { // Unhandled error handler
 
 /** Listen on provided port, on all network interfaces. **/
 server.listen(environment.port, async (): Promise<void> => {
-    Logger.info(`⚡ ${environment.appName} Server Running here -> http://localhost:${environment.port}`);
+    const ip = environment.isProduction() ?
+        Object.values(networkInterfaces()).flat().find(details => details && details.family == 'IPv4' && !details.internal)?.address
+        : 'localhost';
+    Logger.info(`⚡ ${environment.appName} Server Running here -> ${ip ?? hostname()}:${environment.port}`);
     await KeycloakHelper.init();  // init keycloak
 });
 

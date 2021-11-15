@@ -13,7 +13,7 @@ Two log directories are created, each log is divided by days.
 
 NOTE: 
 - Logs older than 14 days are deleted
-- In production only **error** and **warn** log will be saved.
+- In production only **info**, **error** and **warn** log will be saved.
 
 ## Development
 

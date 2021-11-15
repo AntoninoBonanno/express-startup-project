@@ -18,9 +18,11 @@ export default class PostController {
         const pageSize = Number(req.query.pageSize),
             currentPage = Number(req.query.currentPage);
 
+        const totalItems = await PostService.count();
         const paginatedList: IPaginatedList<Post> = {
             pageSize, currentPage,
-            totalPages: Math.ceil(await PostService.count() / pageSize),
+            totalPages: Math.ceil(totalItems / pageSize),
+            totalItems,
             contentList: await PostService.list(currentPage, pageSize)
         };
 
