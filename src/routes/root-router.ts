@@ -13,7 +13,7 @@ const apiRouter = express.Router();
 apiRouter.use('/users', userRouter);
 apiRouter.use('/posts', postRouter);
 apiRouter.use('/storage-files', storageFileRouter);
-apiRouter.use('/notifications', KeycloakHelper.protect(environment.appRoles.admin), notificationRouter);
+apiRouter.use('/notifications', KeycloakHelper.protect([environment.appRoles.admin]), notificationRouter);
 
 /** BASE Routes **/
 const rootRouter = express.Router();

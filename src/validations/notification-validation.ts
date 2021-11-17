@@ -1,6 +1,7 @@
-import {body, param} from "express-validator";
+import {body} from "express-validator";
 import validationMiddleware from "../middlewares/validation-middleware";
 import ICrudValidation from "../interfaces/crud-validation";
+import {idParamChain} from "./shared/general-validation";
 
 /** VALIDATIONS **/
 
@@ -11,7 +12,7 @@ const NotificationValidation: ICrudValidation = {
         body('data').isObject()
     ]),
     update: validationMiddleware([
-        param('id').isNumeric(),
+        idParamChain,
 
         body('read').optional().isBoolean()
     ])

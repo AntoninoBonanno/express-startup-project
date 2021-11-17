@@ -73,10 +73,19 @@ class KcHelper {
 
     /**
      * Return the middleware to protecting resources
-     * @param role you can specify the role that the user must have
+     * @param roles you can specify the roles that the user must have
      */
-    public protect(role?: string): RequestHandler {
-        return this.keycloak.protect(role);
+    public protect(roles?: Array<string>): RequestHandler {
+        if (!roles) {
+            return this.keycloak.protect();
+        }
+        if (roles.length === 1) {
+            return this.keycloak.protect(roles[0])
+        }
+        return this.keycloak.protect((_, req, __) => {
+            const user = this.getCurrentUser(req);
+            return user ? user.hasRole(roles) : false;
+        });
     }
 
     /**
@@ -181,17 +190,25 @@ export class KcTokenUser {
     }
 
     /**
+     * Check if user has one of the roles indicated
+     * @param roles roles to check if assigned to the user
+     */
+    hasRole(roles: Array<string>): boolean {
+        return this.roles ? this.roles.some(role => roles.includes(role)) : false;
+    }
+
+    /**
      * Check if user is a Admin role
      */
     isAdmin(): boolean {
-        return this.roles.some(role => role === environment.appRoles.admin);
+        return this.hasRole([environment.appRoles.admin]);
     }
 
     /**
      * Check if user is a User role
      */
     isUser(): boolean {
-        return this.roles.some(role => role === environment.appRoles.user);
+        return this.hasRole([environment.appRoles.user]);
     }
 
 }

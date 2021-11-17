@@ -4,7 +4,7 @@ import environment from "../environment";
 import KeycloakHelper from "../helpers/keycloak-helper";
 import {UploadedFile} from "express-fileupload";
 import StorageFileService from "../services/storage_file-service";
-import uniqueID from "../helpers/unique-id";
+import {nanoid} from "nanoid/non-secure";
 
 export default class StorageFileController {
 
@@ -50,7 +50,7 @@ export default class StorageFileController {
         const currentUser = KeycloakHelper.getCurrentUser(req)!,
             uploadFile = req.files.uploadFile as UploadedFile;
 
-        const path = await StorageFileService.saveFile(uploadFile, `${currentUser.id}/${uniqueID()}`);
+        const path = await StorageFileService.saveFile(uploadFile, `${currentUser.id}/${nanoid()}`);
         const storageFile = await StorageFileService.create({
             name: uploadFile.name,
             description: req.body.description,

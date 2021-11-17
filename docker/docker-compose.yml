@@ -43,6 +43,8 @@ services:
     links:
       - mysql
 #      - keycloak
+    volumes:
+      - volume:/usr/app/storage
 
 volumes:
   volume:
