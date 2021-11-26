@@ -51,7 +51,11 @@ class KcHelper {
             secret: PasswordGenerator.generate(),
             resave: false,
             saveUninitialized: true,
-            store: this.memoryStore
+            store: this.memoryStore,
+            cookie: {
+                secure: true,
+                httpOnly: true
+            }
         });
     }
 
