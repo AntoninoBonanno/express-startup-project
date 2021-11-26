@@ -29,7 +29,6 @@ myFunction(req: Request, res: Response): void {
     
     await otherAsyncFunction().catch(error => {
         // handled by the `error-middleware`, sends `IStatusMessage` with 500 status
-        // same of throw new Error(error.stack);
         // error.stack will only be saved in the internal log
         throw new InternalServerErrorException(error.stack);
     });

@@ -52,6 +52,7 @@ socket.on("authenticated", data => {
     
 socket.on("unauthorized", data => {
     // {status: 401, message: `Authentication failure socket {{socketId}}`}
+    // {status: 403, message: `Access denied`}
     // {status: 500, message: `Internal server error`}
 });
 

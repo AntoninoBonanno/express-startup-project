@@ -4,6 +4,7 @@ import Logger from "./logger";
 import KeycloakHelper from "./keycloak-helper";
 import IStatusMessage from "../interfaces/status-message";
 import {StatusCodes} from "http-status-codes";
+import {ForbiddenException, UnauthorizedException} from "../exceptions/http-exceptions";
 
 export default class IoSocket extends Server {
     private clients: Map<string, Socket> = new Map<string, Socket>();
@@ -14,38 +15,42 @@ export default class IoSocket extends Server {
         this.on('connection', (socket: Socket) => { // Socket.io handler on connection
             Logger.debug('(Socket) Client connection');
 
-            socket.on('authentication', async (data: any) => {
-                // As soon as authentication is requested, check if the token received is valid
-                const accessToken = await KeycloakHelper.validateAccessToken(data).catch(error => {
-                    const errorMessage: IStatusMessage = {
+            socket.on('authentication', async (accessToken: string) => {
+                try {
+                    // As soon as authentication is requested, check if the token received is valid
+                    const currentUser = await KeycloakHelper.validateAccessToken(accessToken);
+                    if (currentUser.isUser()) {
+                        // TODO: Add the Auth logic
+                        throw new ForbiddenException();
+                    }
+
+                    // Valid token: send an `authenticated` event with status 200 and store the user for send other requests
+                    this.clients.set(socket.id, socket);
+
+                    const statusMessage = {status: StatusCodes.OK, message: `Authentication success`};
+                    Logger.info(`(Socket) [${statusMessage.status}] Authenticated client connection: ${socket.id}`);
+                    socket.emit('authenticated', statusMessage);
+                } catch (error) {
+                    let errorMessage: IStatusMessage = {
                         status: StatusCodes.INTERNAL_SERVER_ERROR,
                         message: `Internal server error`
                     };
-                    // Error on verify token: send an `unauthorized` event with status 500 and disconnect the user
+
+                    if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
+                        errorMessage = error instanceof UnauthorizedException ? {
+                            status: StatusCodes.UNAUTHORIZED,
+                            message: `Authentication failure socket ${socket.id}`
+                        } : {
+                            status: StatusCodes.FORBIDDEN,
+                            message: error.uiMessage
+                        };
+                        Logger.warn(`(Socket) [${errorMessage.status}] ${errorMessage.message}`);
+                    } else if (error instanceof Error) {
+                        Logger.error(`(Socket) [${errorMessage.status}] ${error.stack}`);
+                    }
                     socket.emit('unauthorized', errorMessage);
                     socket.disconnect();
-
-                    throw new Error(`(Socket) [${errorMessage.status}] ${error.stack}`);
-                });
-
-                let statusMessage: IStatusMessage;
-                if (!accessToken) {
-                    statusMessage = {
-                        status: StatusCodes.UNAUTHORIZED,
-                        message: `Authentication failure socket ${socket.id}`
-                    };
-                    // Invalid token: send an `unauthorized` event with status 401 and disconnect the user
-                    Logger.warn(`(Socket) [${statusMessage.status}] ${statusMessage.message}`);
-                    socket.emit('unauthorized', statusMessage);
-                    return socket.disconnect();
                 }
-
-                // Valid token: send an `authenticated` event with status 200 and store the user for send other requests
-                statusMessage = {status: StatusCodes.OK, message: `Authentication success`};
-                Logger.info(`(Socket) [${statusMessage.status}] Authenticated client connection: ${socket.id}`);
-                socket.emit('authenticated', statusMessage);
-
-                this.clients.set(socket.id, socket);
             });
 
             socket.on('disconnect', () => {

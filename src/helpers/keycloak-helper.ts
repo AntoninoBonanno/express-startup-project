@@ -10,7 +10,6 @@ import PasswordGenerator from "generate-password"
 import {Credentials} from "@keycloak/keycloak-admin-client/lib/utils/auth";
 import ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 import {ForbiddenException, InternalServerErrorException, UnauthorizedException} from "../exceptions/http-exceptions";
-import UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
 
 class KcHelper {
     private readonly keycloak: Keycloak; //used for router protection
@@ -91,21 +90,30 @@ class KcHelper {
     /**
      * Perform live validation of an access_token against the Keycloak server.
      * @param token The token to validate.
-     * @param getUser If is true and token is valid return a UserRepresentation.
-     * @return validatedToken false if the token is invalid, the same token if valid or if is specified a UserRepresentation.
+     * @throws UnauthorizedException if token is expired or invalid
+     * @return currentUser if token is valid return a KcTokenUser.
      */
-    public async validateAccessToken(token: string, getUser: boolean = false): Promise<string | boolean | UserRepresentation> {
-        const validatedToken = await this.keycloak.grantManager.validateAccessToken(token);
-        if (getUser && validatedToken) {
-            return this.keycloak.grantManager.userInfo(token).then((user: any) => {
-                return {
-                    id: user.sub,
-                    emailVerified: user.email_verified,
-                    username: user.preferred_username
-                } as UserRepresentation
-            });
-        }
-        return validatedToken;
+    public async validateAccessToken(token: string): Promise<KcTokenUser> {
+        const [user, client] = await Promise.all([
+            this.keycloak.grantManager.userInfo(token)
+                .then(userRaw => userRaw as any)
+                .catch(error => {
+                    throw new UnauthorizedException(error.message);
+                }),
+            this.getClient()
+        ]);
+
+        return this.kcAdminClient.users.listCompositeClientRoleMappings({
+            id: user.sub,
+            clientUniqueId: client.id!
+        }).then(roles => {
+            return new KcTokenUser(
+                user.sub,
+                user.preferred_username,
+                user.email_verified,
+                roles.map(role => role.name!)
+            );
+        });
     }
 
     /**
@@ -116,7 +124,7 @@ class KcHelper {
         await this.kcAdminClient
             .auth(this.config.adminCredentials as Credentials)
             .catch(e => {
-                throw new Error(JSON.stringify(Object.assign(e.toJSON(), {data: e.response?.data}), null, "\t"));
+                Logger.error(JSON.stringify(Object.assign(e.toJSON(), {data: e.response?.data}), null, "\t"));
             });
 
         const keycloakIssuer = await Issuer.discover(`${this.config.baseUrl}/realms/${this.config.realmName}`);
@@ -168,9 +176,6 @@ class KcHelper {
             content.resource_access[this.config.clientId!]?.roles,
             content.realm_access.roles
         ) : undefined;
-        // // @ts-ignore
-        // this.keycloak.grantManager.userInfo(req.kauth.grant?.access_token)
-        //     .then(user => console.log(user));
     }
 }
 
@@ -179,9 +184,9 @@ export class KcTokenUser {
     preferredUsername: string;
     emailVerified: boolean;
     roles: Array<string>;
-    realmRoles: Array<string>;
+    realmRoles?: Array<string>;
 
-    constructor(id: string, preferredUsername: string, emailVerified: boolean, roles: Array<string>, realmRoles: Array<string>) {
+    constructor(id: string, preferredUsername: string, emailVerified: boolean, roles: Array<string>, realmRoles?: Array<string>) {
         this.id = id;
         this.preferredUsername = preferredUsername;
         this.emailVerified = emailVerified;

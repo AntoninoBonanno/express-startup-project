@@ -23,7 +23,7 @@ export default StorageFileValidation;
  */
 export const isNotUsedStorageIds: CustomValidator = (value, {req}) => {
     if (!Array.isArray(value)) {
-        throw new Error('The input is not an array');
+        return Promise.reject('The input is not an array');
     }
 
     const OR: Array<any> = [{postId: null}];
