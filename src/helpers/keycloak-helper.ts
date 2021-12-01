@@ -145,7 +145,14 @@ class KcHelper {
 
         // Periodically using refresh_token grant flow to get new access token here
         setInterval(async () => {
-            tokenSet = await client.refresh(tokenSet); // get the refresh_token from tokenSet
+            tokenSet = await client.refresh(tokenSet).catch(error => { // get the refresh_token from tokenSet
+                Logger.warn(`kcAdminClient token refresh: ${error.stack}`);
+                return client.grant({
+                    grant_type: this.config.adminCredentials.grantType,
+                    username: this.config.adminCredentials.username,
+                    password: this.config.adminCredentials.password,
+                });
+            });
             this.kcAdminClient.setAccessToken(tokenSet.access_token!);
             Logger.debug('kcAdminClient token refreshed');
         }, (tokenSet.expires_in || 60) * 1000); // 300 || 60 seconds

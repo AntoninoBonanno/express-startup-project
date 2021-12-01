@@ -10,14 +10,14 @@ const PostValidation: ICrudValidation = {
     create: validationMiddleware([
         body('title').isString().trim(),
         body('body').isString().trim(),
-        body('attachmentIds').isArray({min: 1}).isNumeric().custom(isNotUsedStorageIds)
+        body('attachmentIds').isArray({min: 1}).isInt({min: 0}).toInt().custom(isNotUsedStorageIds)
     ]),
     update: validationMiddleware([
         idParamChain,
 
         body('title').optional().isString().trim(),
         body('body').optional().isString().trim(),
-        body('attachmentIds').optional().isArray({min: 1}).isNumeric().custom(isNotUsedStorageIds)
+        body('attachmentIds').optional().isArray({min: 1}).isInt({min: 0}).toInt().custom(isNotUsedStorageIds)
     ])
 };
 export default PostValidation;

@@ -54,6 +54,17 @@ export default function errorMiddleware(err: Error, req: Request, res: Response,
         return httpErrorMiddleware(err, req, res, next);
     }
 
+    // @ts-ignore
+    if (err instanceof SyntaxError && err.status === 400) {
+        return httpErrorMiddleware(new BadRequestException([{
+            msg: err.message,
+            // @ts-ignore
+            value: ('body' in err) ? err.body : '',
+            param: 'body',
+            location: 'body'
+        }]), req, res, next);
+    }
+
     Logger.error(`[500] ${req.method} ${req.path} -> ${err.stack}`);
     const response: IStatusMessage = {status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Something went wrong'};
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(response);

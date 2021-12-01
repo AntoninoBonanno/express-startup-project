@@ -1,6 +1,6 @@
 import prisma from "../helpers/prisma";
 import {Post, Prisma, StorageFile} from "@prisma/client";
-import {NotFoundException} from "../exceptions/http-exceptions";
+import {InternalServerErrorException, NotFoundException} from "../exceptions/http-exceptions";
 
 export default class PostService {
 
@@ -68,7 +68,12 @@ export default class PostService {
      * @param id id of element
      */
     static async exist(id: number): Promise<boolean> {
-        return this.find(id).then(_ => true).catch(_ => false);
+        return this.find(id).then(_ => true).catch(error => {
+            if(error.status === 404) {
+                return false;
+            }
+            throw new InternalServerErrorException("Argument id: invalid value");
+        });
     }
 
     /**
