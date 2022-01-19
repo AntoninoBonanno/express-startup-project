@@ -23,7 +23,7 @@ rootRouter.get('/', (req: Request, res: Response): void => {
 
 rootRouter.use('/api', KeycloakHelper.protect(), apiRouter);
 
-rootRouter.get('*', (req: Request) => {
+rootRouter.all('*', (req: Request) => {
     throw new NotFoundException(`Cannot ${req.method} ${req.path}`, false);
 });
 

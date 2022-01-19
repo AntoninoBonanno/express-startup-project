@@ -108,9 +108,7 @@ export default class StorageFileService {
      * @param path path of file
      */
     private static deleteFile(path: string): void {
-        fs.unlink(`${environment.storagePath}/${path}`, err => {
-            throw new InternalServerErrorException(err?.stack || `Unable to delete file: ${path}`);
-        });
+        fs.unlinkSync(`${environment.storagePath}/${path}`);
     }
 }
 

@@ -31,25 +31,7 @@ export default class IoSocket extends Server {
                     Logger.info(`(Socket) [${statusMessage.status}] Authenticated client connection: ${socket.id}`);
                     socket.emit('authenticated', statusMessage);
                 } catch (error) {
-                    let errorMessage: IStatusMessage = {
-                        status: StatusCodes.INTERNAL_SERVER_ERROR,
-                        message: `Internal server error`
-                    };
-
-                    if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
-                        errorMessage = error instanceof UnauthorizedException ? {
-                            status: StatusCodes.UNAUTHORIZED,
-                            message: `Authentication failure socket ${socket.id}`
-                        } : {
-                            status: StatusCodes.FORBIDDEN,
-                            message: error.uiMessage
-                        };
-                        Logger.warn(`(Socket) [${errorMessage.status}] ${errorMessage.message}`);
-                    } else if (error instanceof Error) {
-                        Logger.error(`(Socket) [${errorMessage.status}] ${error.stack}`);
-                    }
-                    socket.emit('unauthorized', errorMessage);
-                    socket.disconnect();
+                    IoSocket.handleErrors(error, socket);
                 }
             });
 
@@ -69,6 +51,34 @@ export default class IoSocket extends Server {
                 }
             }, 10 * 1000); // 10 Seconds
         });
+    }
+
+    /**
+     * Handle the socket errors and disconnect the socket
+     * @param error the error
+     * @param socket the socket
+     */
+    private static handleErrors(error: unknown, socket: Socket): void {
+        let errorMessage: IStatusMessage = {
+            status: StatusCodes.INTERNAL_SERVER_ERROR,
+            message: `Internal server error`
+        };
+
+        if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
+            errorMessage = error instanceof UnauthorizedException ? {
+                status: StatusCodes.UNAUTHORIZED,
+                message: `Authentication failure socket ${socket.id}`
+            } : {
+                status: StatusCodes.FORBIDDEN,
+                message: error.uiMessage
+            };
+            Logger.warn(`(Socket) [${errorMessage.status}] ${errorMessage.message}`);
+        } else if (error instanceof Error) {
+            Logger.error(`(Socket) [${errorMessage.status}] ${error.stack}`);
+        }
+
+        socket.emit('unauthorized', errorMessage);
+        socket.disconnect();
     }
 
     /**

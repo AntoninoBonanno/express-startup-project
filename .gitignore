@@ -7,5 +7,4 @@ node_modules
 yarn-error.log
 patch.diff
 .env
-package-lock.json
 storage/

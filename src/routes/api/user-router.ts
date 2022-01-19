@@ -14,7 +14,7 @@ userRouter.get(
 
 userRouter.get(
     '/roles',
-    KeycloakHelper.protect(environment.appRoles.admin),
+    KeycloakHelper.protect([environment.appRoles.admin]),
     wrap(UserController.roles)
 );
 
